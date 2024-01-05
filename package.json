@@ -1,0 +1,11 @@
+{
+  "name": "server-manager",
+  "version": "0.0.1",
+  "description": "Mono repo",
+  "scripts": {
+    "start": "npx turbo start"
+  },
+  "author": "Heiler Nova (https://github.com/heilernova/ecommerce)",
+  "keywords": [],
+  "license": "LGPL-3.0-only"
+}
