@@ -1,0 +1,25 @@
+{
+  "name": "nv-deploy",
+  "version": "0.0.1",
+  "description": "Node CLI for deploying projects to server",
+  "main": "./lib/main.js",
+  "bin": {
+    "nv-deploy": "./lib/main.js"
+},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/heilernova/server-manager",
+    "directory": "/apps/cli"
+  },
+  "keywords": [
+    "Node",
+    "CLI",
+    "TypeScript"
+  ],
+  "author": "Heiler Nova (https://github.com/heilernova)",
+  "license": "LGPL-3.0-only",
+  "bugs": {
+    "url": "https://github.com/heilernova/server-manager/issues"
+  },
+  "homepage": "https://github.com/heilernova/server-manager/apps/cli#readme"
+}
