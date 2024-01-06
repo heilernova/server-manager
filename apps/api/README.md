@@ -32,6 +32,17 @@
 $ npm install
 ```
 
+## Environment
+```
+PORT=3001
+
+PGHOST=localhost
+PGUSER=postgres
+PGPASSWORD=server
+PGDATABASE=server
+PGPORT=5432
+```
+
 ## Running the app
 
 ```bash
