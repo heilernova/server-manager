@@ -9,7 +9,7 @@ export class DbAppsService {
 
     async getAll(filter?: { userId?: uuid }): Promise<any[]> {
         if (filter?.userId){
-
+            return (await this._db.query(`select ${AppColumns('a')} from apps a inner join apps_users b on b.app_id where b.user_id = $1`, [filter.userId])).rows;
         }
         return (await this._db.query(`select ${this.fields} from apps`)).rows;
     }
