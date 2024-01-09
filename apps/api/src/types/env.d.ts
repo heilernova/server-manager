@@ -1,13 +1,13 @@
 declare  {
   namespace NodeJS {
     interface ProcessEnv {
-      NODE_ENV: 'development' | 'production';
-      PORT?: string;
-      PGHOST: string,
-      PGUSER: string,
-      PGPASSWORD: string,
-      PGDATABASE: string,
-      PGPORT?: number
+      readonly NODE_ENV: 'development' | 'production';
+      readonly PORT?: string;
+      readonly PGHOST: string,
+      readonly PGUSER: string,
+      readonly PGPASSWORD: string,
+      readonly PGDATABASE: string,
+      readonly PGPORT?: number
     }
   }
 }

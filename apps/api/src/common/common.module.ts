@@ -6,8 +6,10 @@ import { DbAppsService } from './database/services/db-apps/db-apps.service';
 import { DbTokensService } from './database/services/db-tokens/db-tokens.service';
 import { Pm2Service } from './pm2/pm2.service';
 import { DbConnection } from './database';
+import { ConfigService } from './config/config.service';
 
 const services = [
+    ConfigService,
     DeployService,
     Pm2Service,
     DbConnection,
