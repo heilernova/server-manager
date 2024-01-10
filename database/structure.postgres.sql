@@ -62,7 +62,7 @@ create table apps
     "create_at" timestamp not null default now(),
     "update_at" timestamp not null default now(),
     "last_deploy_at" timestamp,
-    "domain" varchar(50) not null,
+    "domain" varchar(100) not null,
     "name" varchar(50) not null,
     "version" varchar(10),
     "location" varchar(600) not null unique,
