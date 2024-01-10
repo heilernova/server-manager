@@ -117,7 +117,7 @@ declare
 begin
 
     for var_record in 
-        select t.id, t.lock, (t."password" = crypt($2, t."password")) as password_valid from users t where (case when $1 ilike '%@%' then t.email else t.username end) = $1
+        select t.id, t.name, t.last_name, t.lock, (t."password" = crypt($2, t."password")) as password_valid from users t where (case when $1 ilike '%@%' then t.email else t.username end) = $1
     loop
         "id" := var_record.id;
         "name" := var_record.name;
