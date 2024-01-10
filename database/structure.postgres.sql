@@ -88,7 +88,7 @@ create table apps_access
     "user_id" uuid not null references users(id),
     "role" apps_access_role default 'collaborator',
     "deploy" boolean not null default false,
-    "edit" boolean not null default false
+    "edit" boolean not null default false,
     constraint "pk_apps_user" primary key ("app_id", "user_id")
 );
 
