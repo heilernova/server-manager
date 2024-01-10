@@ -105,6 +105,8 @@ for each row execute function user_insert_or_update();
 create function user_auth(varchar(100), varchar(50))
 returns table(
     "id" uuid,
+    "name" varchar,
+    "last_name" varchar,
     "lock" boolean,
     "password_valid" boolean
 )
@@ -118,6 +120,8 @@ begin
         select t.id, t.lock, (t."password" = crypt($2, t."password")) as password_valid from users t where (case when $1 ilike '%@%' then t.email else t.username end) = $1
     loop
         "id" := var_record.id;
+        "name" := var_record.name;
+        "last_name" :- var_record.last_name;
         "lock" := var_record.lock;
         "password_valid" := var_record.password_valid;
         
