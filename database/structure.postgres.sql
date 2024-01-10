@@ -122,7 +122,7 @@ begin
     loop
         "id" := var_record.id;
         "name" := var_record.name;
-        "last_name" :- var_record.last_name;
+        "last_name" := var_record.last_name;
         "lock" := var_record.lock;
         "password_valid" := var_record.password_valid;
         
