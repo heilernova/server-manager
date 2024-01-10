@@ -80,10 +80,15 @@ create table apps
     constraint "uni_domain_name" unique ("domain", "name", "version")
 );
 
-create table apps_users
+create type apps_access_role as enum('admin', 'collaborator');
+
+create table apps_access
 (
     "app_id" uuid not null references apps(id),
     "user_id" uuid not null references users(id),
+    "role" apps_access_role default 'collaborator',
+    "deploy" boolean not null default false,
+    "edit" boolean not null default false
     constraint "pk_apps_user" primary key ("app_id", "user_id")
 );
 
