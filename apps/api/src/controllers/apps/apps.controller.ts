@@ -24,7 +24,12 @@ export class AppsController {
 
     @Get()
     async getAll(@GetSession() user: IUser){
-        return this._dbApps.getAll({ userId: user.role == 'developer' ? user.id : undefined });
+        return (await this._dbApps.getAll({ userId: user.role == 'developer' ? user.id : undefined })).map(app => {
+            return {
+                ...app,
+                status: 'stopped' as  "online" | "stopped"  | "errored"
+            }
+        });
     }
 
     @Get(':id')

@@ -43,6 +43,8 @@ export interface IUserUpdate extends Partial<IUserCreate> {}
 
 export interface IUserAuth {
     id: uuid;
+    name: string;
+    lastName: string;
     lock: boolean;
     passwordValid: boolean;
 }

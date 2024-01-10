@@ -24,7 +24,7 @@ export class DbUsersService {
     }
 
     async get(id: uuid): Promise<IUser | undefined> {
-        const result = await this._db.query<IUser>(`select ${this.fields} users where id = $1`, [id]);
+        const result = await this._db.query<IUser>(`select ${this.fields} from users where id = $1`, [id]);
         return result.rows[0] ?? undefined;
     }
 
@@ -48,7 +48,7 @@ export class DbUsersService {
     }
 
     async auth(username: string, password: string): Promise<IUserAuth | undefined> {
-        const result = await this._db.query<IUserAuth>('select id, lock, password_valid as "passwordValid" from user_auth($1, $2)', [username, password]);
+        const result = await this._db.query<IUserAuth>('select id, name, last_name as "lastName", lock, password_valid as "passwordValid" from user_auth($1, $2)', [username, password]);
         return result.rows[0] ?? undefined;
     }
 }

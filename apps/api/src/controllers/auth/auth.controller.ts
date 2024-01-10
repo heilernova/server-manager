@@ -12,10 +12,16 @@ export class AuthController {
         if (auth.lock) throw new HttpException('Tú usuario ya no tiene acceso', 400);
         if (!auth.passwordValid) throw new HttpException('Tú contraseña es incorrecta', 400);
         let token = await this._dbTokens.generate(auth.id, credentials.hostname);
+        let user = await this._dbUsers.get(auth.id);
         return {
-            type: 'key',
-            name: 'app-token',
-            value: token.id
+            role: user?.role,
+            name: user?.name,
+            lastName: user?.lastName,
+            authorization: {
+                type: 'key',
+                name: 'app-token',
+                value: token.id
+            },
         };
     }
 }
