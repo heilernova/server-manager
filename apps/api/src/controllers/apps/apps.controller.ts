@@ -18,7 +18,7 @@ export class AppsController {
             throw new HttpException(`Ya existe una aplicación con la ubicación [${body.location}]`, 400);
         }
         let app = await this._dbApps.create(body);
-        await this._db.insert('apps_users', { userId: user.id, appId: app.id });
+        await this._db.insert('apps_access', { userId: user.id, appId: app.id, role: 'admin', deploy: true, edit: true });
         return app;
     }
 
