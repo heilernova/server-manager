@@ -1,7 +1,9 @@
-import { Body, Controller, Delete, Get, HttpException, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { IsUUIDPipe } from '@api/common/pipes';
 import { DbUsersService, IUser, UserCreateDto, UserUpdateDto, uuid } from '@api/common/database';
+import { GetSession, IsLoggedInGuard } from '@api/common/session';
 
+@UseGuards(IsLoggedInGuard)
 @Controller('users')
 export class UsersController {
     constructor(private readonly _dbUsers: DbUsersService){}
@@ -12,8 +14,8 @@ export class UsersController {
     }
 
     @Get()
-    async getAll(){
-        return this._dbUsers.getAll();
+    async getAll(@GetSession() user: IUser){
+        return this._dbUsers.getAll({ ignore: user.id });
     }
 
     @Get(':id')
