@@ -65,7 +65,8 @@
               "buildTarget": "web-panel:build:production"
             },
             "development": {
-              "buildTarget": "web-panel:build:development"
+              "buildTarget": "web-panel:build:development",
+              "port": 4001
             }
           },
           "defaultConfiguration": "development"
