@@ -1,0 +1,22 @@
+.form-login {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1em;
+    h2 {
+        margin: 0;
+    }
+
+    .inputs {
+        display: flex;
+        flex-direction: column;
+        row-gap: .5em;
+    }
+
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        .input-container {
+            display: flex;
+        }
+    }
+}
