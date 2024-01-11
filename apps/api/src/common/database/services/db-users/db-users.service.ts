@@ -51,4 +51,8 @@ export class DbUsersService {
         const result = await this._db.query<IUserAuth>('select id, name, last_name as "lastName", lock, password_valid as "passwordValid" from user_auth($1, $2)', [username, password]);
         return result.rows[0] ?? undefined;
     }
+
+    async passwordValid(userId: string, password: string){
+        return (await this._db.query<[boolean]>(`select user_password_valid($1, $2)`, [userId, password], true)).rows[0][0];
+    }
 }
