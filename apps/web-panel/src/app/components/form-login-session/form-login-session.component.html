@@ -1,9 +1,33 @@
-<div class="form-login">
-    <h2>Iniciar sesión</h2>
-    <div class="inputs">
-       
-    </div>
-    <div class="actions">
-        <button>Iniciar sesión</button>
-    </div>
-</div>
+<form nz-form nzLayout="vertical" [formGroup]="formGroup">
+    <h2 style="text-align: center;">Iniciar sesión</h2>
+    <nz-form-item>
+        <!-- <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="phoneNumber" nzRequired>Servidor</nz-form-label> -->
+        <nz-form-control>
+            <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate">
+                <input type="text" nz-input formControlName="server" placeholder="Servidor" disable/>
+            </nz-input-group>
+            <ng-template #addOnBeforeTemplate>
+                <nz-select style="width: 8em;" formControlName="ssl">
+                  <nz-option nzLabel="http://" nzValue="http://"/>
+                  <nz-option nzLabel="https://" nzValue="https://"/>
+                </nz-select>
+            </ng-template>
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <!-- <nz-form-label nzRequired>Usuarios</nz-form-label> -->
+        <nz-form-control>
+          <input nz-input formControlName="username" placeholder="Usuario">
+        </nz-form-control>
+    </nz-form-item >
+
+    <nz-form-item>
+        <!-- <nz-form-label nzRequired>Contraseña</nz-form-label> -->
+        <nz-form-control>
+            <input nz-input formControlName="password" type="password" placeholder="Contraseña">
+        </nz-form-control>
+    </nz-form-item >
+
+      <button (click)="singIn()" nz-button [disabled]="disabled()" [nzLoading]="loading()">Iniciar sesión</button>
+</form>
