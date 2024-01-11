@@ -138,6 +138,13 @@ begin
     end loop;
 end;$$;
 
+create function user_password_valid(uuid, varchar(50))
+returns boolean
+language plpgsql
+as $$
+begin
+    return select t.password = crypt($2, t.password) from users t where t.id = $1;
+end;$$;
 
 insert into users values('83df765f-ea4e-4dff-815f-a953c74be04c', default, 'admin', false, 'heilernova', 'heilernova@gmail.com', 'heiler', 'nova', '+57 320 971 6145', 'admin');
 insert into tokens(id, user_id, hostname) values('394954a7-8b98-48ce-8c00-968fc12f4c5e', '83df765f-ea4e-4dff-815f-a953c74be04c', 'Postman');
