@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { DbConnection, Role, uuid, UserColumnsView, IUser, IUserCreate, IUserUpdate, IUserAuth } from '@api/common/database';
+import { filter } from 'rxjs';
 
 
 @Injectable()
@@ -9,17 +10,17 @@ export class DbUsersService {
     private readonly fieldsForToken: string = `a.${UserColumnsView.replaceAll(', ', ', a.')}`;
     constructor(private readonly _db: DbConnection){}
 
-    async getAll(filer?: { ignore?: uuid | uuid[], lock?: boolean, role?: Role }): Promise<IUser[]> {
+    async getAll(filter?: { ignore?: uuid | uuid[], lock?: boolean, role?: Role }): Promise<IUser[]> {
         let conditions: string[] = [];
         let condition: string = '';
         let params: any[] = [];
-        if (filer?.ignore){
-            conditions.push(`id in $${params.push(typeof filer.ignore == 'string' ? [filer.ignore] : filer.ignore)}`);
+        if (filter?.ignore){
+            conditions.push(`id <> any($${params.push(typeof filter.ignore == 'string' ? [filter.ignore] : filter.ignore)})`);
         }
         if (conditions.length > 0){
             condition = `where ${conditions.join(' and ')}`;
         }
-        const result = await this._db.query<IUser>(`select ${this.fields} from users${condition}`);
+        const result = await this._db.query<IUser>(`select ${this.fields} from users ${condition}`, params);
         return result.rows;
     }
 
