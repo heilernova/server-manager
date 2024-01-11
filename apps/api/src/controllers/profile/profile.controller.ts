@@ -2,6 +2,7 @@ import { DbUsersService, IUser } from '@api/common/database';
 import { GetSession, IsLoggedInGuard } from '@api/common/session';
 import { Body, Controller, Get, HttpException, Patch, UseGuards } from '@nestjs/common';
 import { ProfileUpdateDto } from './dto/profile-update.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @UseGuards(IsLoggedInGuard)
 @Controller('profile')
@@ -27,7 +28,7 @@ export class ProfileController {
     }
 
     @Patch('password')
-    async password(@GetSession() session: IUser, @Body() body: any){
+    async password(@GetSession() session: IUser, @Body() body: UpdatePasswordDto){
         const passwordValid: boolean = await this._dbUsers.passwordValid(session.id, body.currentPassword);
         if (!passwordValid) throw new HttpException("Tu contraseña es incorrecta", 400);
         await this._dbUsers.update(session.id, { password: body.newPassword });
