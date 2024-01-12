@@ -1,11 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { ApiAuthService } from '../api/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SessionService {
-
+  private readonly _apiAuth = inject(ApiAuthService);
+  private _verifySession: boolean = false;
   private _user: ISession | null = null;
   public readonly userChange = new BehaviorSubject<ISession | null>(null);
 
@@ -61,8 +63,21 @@ export class SessionService {
         } else {
           let idSession: string | null = localStorage.getItem("session");
           let session = list.find(x => x.id == idSession);
-          this.user = session ?? list[0];
-          resolve(true);
+          let user = session ?? list[0];
+          this.user = user;
+          this._apiAuth.verifySession(user).subscribe({
+            next: res => {
+              user.role = res.role;
+              user.name = res.name;
+              user.lastName = res.lastName;
+              this.save(user);
+              resolve(true);
+            },
+            error: err => {
+              console.log(err);
+              resolve(false);
+            }
+          })
         }
       })
       .catch(() => {
