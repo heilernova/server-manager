@@ -3,3 +3,8 @@
 body {
     font-family: 'Roboto Mono', monospace;
 }
+
+.flex {
+    display: flex;
+    column-gap: 1em;
+}

@@ -4,7 +4,7 @@ import { IsIn, IsObject, IsOptional, IsString } from "class-validator";
 import { Framework, IAppInsert, RunningOn, RuntimeEnvironment } from "@api/common/database";
 import { runtime_environment_list, framework_list,  running_on_list } from '@api/common/database/schemas/types';
 
-export class AppCreateDto implements IAppInsert {
+export class AppCreateDto {
     @IsString()
     @IsOptional()
     version?: string | null | undefined;
@@ -20,12 +20,7 @@ export class AppCreateDto implements IAppInsert {
     @IsString()
     @IsOptional()
     url: string | null;
-    @IsString()
-    @IsOptional()
-    github: string | null;
-    @IsString()
-    @IsOptional()
-    githubSshKey: string | null;
+    
     @IsIn(running_on_list)
     @IsOptional()
     runningOn: RunningOn | null;

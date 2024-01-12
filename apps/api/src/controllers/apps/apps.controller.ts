@@ -10,26 +10,21 @@ export class AppsController {
 
     @Post()
     async create(@GetSession() user: IUser, @Body() body: AppCreateDto){
-        let check: boolean = await this._dbApps.checkDomainAndName(body.domain, body.name, body.version);
-        if (!check){
-            throw new HttpException(`Ya existe una aplicación el dominio y nombre [${body.domain}] - [${body.name}] - [${body.version}]`, 400);
-        }
-        if (!await this._dbApps.checkLocation(body.location)){
-            throw new HttpException(`Ya existe una aplicación con la ubicación [${body.location}]`, 400);
-        }
-        let app = await this._dbApps.create(body);
-        await this._db.insert('apps_access', { userId: user.id, appId: app.id, role: 'admin', deploy: true, edit: true });
-        return app;
+        // let check: boolean = await this._dbApps.checkDomainAndName(body.domain, body.name, body.version);
+        // if (!check){
+        //     throw new HttpException(`Ya existe una aplicación el dominio y nombre [${body.domain}] - [${body.name}] - [${body.version}]`, 400);
+        // }
+        // if (!await this._dbApps.checkLocation(body.location)){
+        //     throw new HttpException(`Ya existe una aplicación con la ubicación [${body.location}]`, 400);
+        // }
+        let app = await this._dbApps.create(body as any);
+        // await this._db.insert('apps_access', { userId: user.id, appId: app.id, role: 'admin', deploy: true, edit: true });
+        // return app;
     }
 
     @Get()
     async getAll(@GetSession() user: IUser){
-        return (await this._dbApps.getAll({ userId: user.role == 'developer' ? user.id : undefined })).map(app => {
-            return {
-                ...app,
-                status: 'stopped' as  "online" | "stopped"  | "errored"
-            }
-        });
+        return (await this._dbApps.getAll({ userId: user.role == 'developer' ? user.id : undefined }));
     }
 
     @Get(':id')

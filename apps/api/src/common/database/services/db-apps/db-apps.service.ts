@@ -9,9 +9,9 @@ export class DbAppsService {
 
     async getAll(filter?: { userId?: uuid }): Promise<any[]> {
         if (filter?.userId){
-            return (await this._db.query(`select ${AppColumns('a')} from apps a inner join apps_users b on b.app_id where b.user_id = $1`, [filter.userId])).rows;
         }
-        return (await this._db.query(`select ${this.fields} from apps`)).rows;
+        return (await this._db.query(`select * from applications`)).rows;
+        // return (await this._db.query(`select ${this.fields} from apps`)).rows;
     }
 
     async get(appId: uuid, userId?: uuid): Promise<any | undefined> {
@@ -29,7 +29,7 @@ export class DbAppsService {
     }
 
     async create(data: IAppInsert){
-        let result = await this._db.insert('apps', data, this.fields);
+        let result = await this._db.insert('applications', data);
         return result.rows[0]
     }
 

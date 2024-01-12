@@ -1,3 +1,4 @@
+import { OmitBy, PartialBy } from "@api/types";
 import { Framework, RunningOn, RuntimeEnvironment, uuid } from "./types";
 
 export const app_columns: string[] = [
@@ -33,37 +34,33 @@ export interface IAppRow {
     createAt: Date;
     updateAt: Date;
     lastDeployAt: Date;
-    version: string | null;
     domain: string;
     name: string; 
-    url: string | null;
-    github: string | null;
-    githubSshKey: string | null;
-    runningOn: RunningOn | null;
-    startupFile: string | null;
-    framework: Framework | null;
-    runtimeEnvironment: RuntimeEnvironment | null;
-    env: { [key: string]: string };
+    version: string | null;
     location: string;
+    startupFile: string | null;
+    url: string | null;
+    framework: Framework | null;
+    runningOn: RunningOn | null;
+    runtimeEnvironment: RuntimeEnvironment | null;
+    github: {
+        url: string;
+        location: string | null;
+        ssh: string | null;
+    } | null;
+    env: { [key: string]: string };
     ignore: string[];
-    observations: string | null;
+    observation: string | null;
 }
 
-export interface IAppInsert {
-    version?: string | null;
-    domain: string;
-    name: string;
-    url: string | null;
-    github: string | null;
-    githubSshKey: string | null;
-    runningOn: RunningOn | null;
-    startupFile: string | null;
-    framework: Framework | null;
-    runtimeEnvironment: RuntimeEnvironment | null;
-    env: { [key: string]: string };
-    location: string;
-    ignore: string[];
-    observations: string | null;
-}
+export interface IAppInsert extends OmitBy<PartialBy<IAppRow, 'id' | 'version' | 'startupFile' | 'runningOn' | 'framework' | 'runningOn' | 'runtimeEnvironment' | 'github' | 'env' | 'ignore' | 'observation'>, 'createAt' | 'updateAt'> {}
 
 export interface IAppUpdate extends Partial<IAppInsert> {}
+
+export interface IApplication extends IAppRow {
+    permits: {
+        role: "admin" | "collaborator";
+        edit: boolean;
+        deploy: boolean;
+    }
+}

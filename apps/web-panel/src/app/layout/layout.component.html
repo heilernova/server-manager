@@ -1,1 +1,53 @@
-<p>layout works!</p>
+<header>
+    <div>
+        title
+    </div>
+    <div style="cursor: pointer;" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
+        {{nameUser()}}
+    </div>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+        <ul nz-menu>
+          <li nz-menu-item routerLink="/profile">Perfil</li>
+          <li nz-menu-item (click)="onClickOpenNewSession()">Agregar sesión</li>
+          <li nz-menu-item (click)="onClickCloseSession()">Cerrar sesión</li>
+        </ul>
+    </nz-dropdown-menu>
+</header>
+<aside>
+    <div class="logo">
+        SM | Panel
+    </div>
+    <nav>
+        <ul>
+            <li routerLink="/apps">Aplicaciones</li>
+            <li>PM2</li>
+            <li>Usuarios</li>
+        </ul>
+    </nav>
+</aside>
+<section>
+    <div>
+        <router-outlet/>
+    </div>
+</section>
+<footer>
+    Sever manager panel by Novaccode
+</footer>
+
+<nz-drawer
+      [nzBodyStyle]="{ overflow: 'auto' }"
+      [nzMaskClosable]="false"
+      [nzWidth]="720"
+      [nzVisible]="openNewSession()"
+      (nzOnClose)="onClickCloseNewSession()"
+      [nzFooter]="footerTpl"
+      nzTitle="Neva sesión"
+    >
+    <app-form-login-session *nzDrawerContent/>
+    <ng-template #footerTpl>
+        <div style="float: right">
+          <button nz-button style="margin-right: 8px;" (click)="onClickCloseNewSession()">Cancel</button>
+          <!-- <button nz-button nzType="primary" (click)="onClickCloseNewSession()">Submit</button> -->
+        </div>
+      </ng-template>
+</nz-drawer>

@@ -1,0 +1,8 @@
+<p>app-list-pages works!</p>
+<ul>
+    @for (app of list(); track $index) {
+        <li>
+            {{app.domain}} | {{app.name}} | {{app.status}} | <a [routerLink]="app.id">Editar</a>
+        </li>
+    }
+</ul>

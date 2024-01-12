@@ -14,7 +14,7 @@ check (value ~* '^[A-Za-z0-9._+%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$');
 create type runtime_environment as enum('Node.js', 'Python', 'PHP');
 create type framework as enum('NestJS', 'Angular', 'FastAPI');
 create type running_on as enum('PM2', 'Docker', 'LiteSpeed', 'Apache');
-create type user_role as enum('admin', 'developer');
+create type user_role as enum('admin', 'collaborator');
 
 -- Table users
 create table users
@@ -78,13 +78,11 @@ create table applications
     constraint "uni_domain_name" unique ("domain", "name", "version")
 );
 
-create type applications_access_role as enum('admin', 'collaborator');
-
 create table applications_access
 (
     "app_id" uuid not null references applications(id),
     "user_id" uuid not null references users(id),
-    "role" applications_access_role default 'collaborator',
+    "role" user_role default 'collaborator',
     "edit" boolean not null default false,
     "deploy" boolean not null default false,
     constraint "pk_apps_user" primary key ("app_id", "user_id")
