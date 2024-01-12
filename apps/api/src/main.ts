@@ -2,7 +2,7 @@ import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import { AppModule } from '@api/app.module';
-import { responseMiddleware } from '@api/middlewares';
+import { AllExceptionsFilter, responseMiddleware } from '@api/middlewares';
 
 async function bootstrap() {
   dotenv.config({ path: '.env' })
@@ -11,7 +11,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.enableCors();
   app.use(responseMiddleware);
-
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
   try {
     const port = process.env.PORT ?? 3000;
     await app.listen(port);
