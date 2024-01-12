@@ -8,5 +8,8 @@ export const routes: Routes = [
         path: '',
         canActivate: [layoutGuard],
         loadComponent: () => import('./layout/layout.component').then(x => x.LayoutComponent),
+        children: [
+            { path: 'profile', loadComponent: () => import('./pages/profile-page/profile-page.component').then(x => x.ProfilePageComponent) }
+        ]
     }
 ];
