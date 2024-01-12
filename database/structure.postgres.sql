@@ -8,7 +8,7 @@ create extension unaccent;
 create domain cellphone as
 varchar check (value ~* '^\+\d+ \d{3} \d{3} \d{4}$');
 
-create domain email as varchar(150)
+create domain email as varchar(100)
 check (value ~* '^[A-Za-z0-9._+%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$');
 
 create type runtime_environment as enum('Node.js', 'Python', 'PHP');
