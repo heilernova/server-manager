@@ -21,7 +21,7 @@ create table users
 (
     "id" uuid primary key default gen_random_uuid(),
     "create_at" timestamp not null default now(),
-    "role" user_role not null default 'developer',
+    "role" user_role not null default 'collaborator',
     "lock" boolean not null default true,
     "username" varchar(30) not null,
     "email" email not null unique,
@@ -141,6 +141,15 @@ as $$
 begin
     return (select t.password = crypt($2, t.password) from users t where t.id = $1);
 end;$$;
+
+
+create view vi_applications as
+select
+	b.user_id,
+	json_build_object('edit', b.edit, 'deploy', b.deploy) as permits,
+	a.*
+from applications a 
+inner join applications_access b on b.app_id = a.id;
 
 insert into users values('83df765f-ea4e-4dff-815f-a953c74be04c', default, 'admin', false, 'heilernova', 'heilernova@gmail.com', 'heiler', 'nova', '+57 320 971 6145', 'admin');
 insert into users_tokens(id, user_id, hostname) values('394954a7-8b98-48ce-8c00-968fc12f4c5e', '83df765f-ea4e-4dff-815f-a953c74be04c', 'Postman');
