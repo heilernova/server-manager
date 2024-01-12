@@ -46,7 +46,7 @@ create table users_log
     "detail" varchar(80) not null
 );
 
-create table tokens
+create table users_tokens
 (
     "id" uuid default gen_random_uuid(),
     "create_at" timestamp not null default now(),
@@ -56,7 +56,7 @@ create table tokens
     constraint "pk_id_hostname" primary key ("user_id", "hostname")
 );
 
-create table apps
+create table applications
 (
     "id" uuid primary key default gen_random_uuid(),
     "create_at" timestamp not null default now(),
@@ -71,24 +71,22 @@ create table apps
     "running_on" running_on,
     "runtime_environment" runtime_environment,
     "url" varchar(100),
-    "github" varchar(200),
-    "github_directory" varchar(200),
-    "github_ssh_key" text,
+    "github" json,
     "env" json not null default '{}'::json,
     "ignore" text[] not null default array[]::text[],
     "observation" varchar(1000),
     constraint "uni_domain_name" unique ("domain", "name", "version")
 );
 
-create type apps_access_role as enum('admin', 'collaborator');
+create type applications_access_role as enum('admin', 'collaborator');
 
-create table apps_access
+create table applications_access
 (
-    "app_id" uuid not null references apps(id),
+    "app_id" uuid not null references applications(id),
     "user_id" uuid not null references users(id),
-    "role" apps_access_role default 'collaborator',
-    "deploy" boolean not null default false,
+    "role" applications_access_role default 'collaborator',
     "edit" boolean not null default false,
+    "deploy" boolean not null default false,
     constraint "pk_apps_user" primary key ("app_id", "user_id")
 );
 
@@ -143,8 +141,8 @@ returns boolean
 language plpgsql
 as $$
 begin
-    return select t.password = crypt($2, t.password) from users t where t.id = $1;
+    return (select t.password = crypt($2, t.password) from users t where t.id = $1);
 end;$$;
 
 insert into users values('83df765f-ea4e-4dff-815f-a953c74be04c', default, 'admin', false, 'heilernova', 'heilernova@gmail.com', 'heiler', 'nova', '+57 320 971 6145', 'admin');
-insert into tokens(id, user_id, hostname) values('394954a7-8b98-48ce-8c00-968fc12f4c5e', '83df765f-ea4e-4dff-815f-a953c74be04c', 'Postman');
+insert into users_tokens(id, user_id, hostname) values('394954a7-8b98-48ce-8c00-968fc12f4c5e', '83df765f-ea4e-4dff-815f-a953c74be04c', 'Postman');
