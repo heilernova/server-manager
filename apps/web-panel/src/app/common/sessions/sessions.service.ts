@@ -91,6 +91,20 @@ export class SessionService {
       .catch(err => reject(err));
     });
   }
+
+  delete(id: string): Promise<void>{
+    return new Promise((resolve, reject) => {
+      this.openIndexedDB().then(db => {
+        let objectStore = db.transaction("sessions", "readwrite").objectStore("sessions");
+        let result = objectStore.delete(id);
+        result.onerror = err => reject(err);
+        result.onsuccess = () => {
+          resolve();
+        }
+      })
+      .catch(err => reject(err));
+    })
+  }
 }
 
 
