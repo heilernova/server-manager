@@ -1,9 +1,9 @@
 <div class="form">
-    <form nz-form>
+    <form nz-form [formGroup]="formGroup">
         <nz-form-item>
           <nz-form-control>
             <nz-input-group nzAddOnBefore="Nombre">
-                <input type="text" nz-input/>
+                <input type="text" nz-input formControlName="name"/>
               </nz-input-group>
           </nz-form-control>
         </nz-form-item >
@@ -11,7 +11,7 @@
         <nz-form-item>
             <nz-form-control>
               <nz-input-group nzAddOnBefore="Apellido" nz-col="2">
-                  <input type="text" nz-input/>
+                  <input type="text" nz-input formControlName="lastName"/>
                 </nz-input-group>
             </nz-form-control>
         </nz-form-item>
@@ -19,7 +19,7 @@
         <nz-form-item>
             <nz-form-control>
               <nz-input-group nzAddOnBefore="Usuario">
-                  <input type="text" nz-input/>
+                  <input type="text" nz-input formControlName="username"/>
                 </nz-input-group>
             </nz-form-control>
         </nz-form-item>
@@ -27,7 +27,7 @@
         <nz-form-item>
             <nz-form-control>
               <nz-input-group nzAddOnBefore="Correo electrónico">
-                  <input type="text" nz-input/>
+                  <input type="text" nz-input formControlName="email"/>
                 </nz-input-group>
             </nz-form-control>
         </nz-form-item>
@@ -35,7 +35,7 @@
         <nz-form-item>
             <nz-form-control>
               <nz-input-group nzAddOnBefore="Teléfono">
-                  <input type="text" nz-input/>
+                  <input type="text" nz-input formControlName="cellphone"/>
                 </nz-input-group>
             </nz-form-control>
         </nz-form-item>
@@ -43,5 +43,5 @@
 </div>
 <div class="flex">
     <button nz-button (click)="onClickUpdatePassword()">Actualizar contraseña</button>
-    <button nz-button>Guardar cambios</button>
+    <button nz-button disabled>Guardar cambios</button>
 </div>
