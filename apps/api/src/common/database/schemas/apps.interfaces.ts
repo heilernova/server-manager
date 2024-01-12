@@ -53,14 +53,18 @@ export interface IAppRow {
     observation: string | null;
 }
 
-export interface IAppInsert extends OmitBy<PartialBy<IAppRow, 'id' | 'version' | 'startupFile' | 'runningOn' | 'framework' | 'runningOn' | 'runtimeEnvironment' | 'github' | 'env' | 'ignore' | 'observation'>, 'createAt' | 'updateAt'> {}
+export interface IAppInsert extends OmitBy<PartialBy<IAppRow, 'id' | 'version' | 'startupFile' | 'runningOn' | 'framework' | 'runningOn' | 'runtimeEnvironment' | 'github' | 'env' | 'ignore' | 'observation'>, 'createAt' | 'updateAt' | 'lastDeployAt'> {}
 
 export interface IAppUpdate extends Partial<IAppInsert> {}
 
-export interface IApplication extends IAppRow {
+export interface IApplicationView extends IAppRow {
     permits: {
         role: "admin" | "collaborator";
         edit: boolean;
         deploy: boolean;
     }
+}
+
+export interface IApplication extends IApplicationView {
+    status: "online" | "stopping" | "stopped" | "launching" | "errored" | "one-launch-status";
 }

@@ -4,7 +4,8 @@ import { IsIn, IsObject, IsOptional, IsString } from "class-validator";
 import { Framework, IAppInsert, RunningOn, RuntimeEnvironment } from "@api/common/database";
 import { runtime_environment_list, framework_list,  running_on_list } from '@api/common/database/schemas/types';
 
-export class AppCreateDto {
+export class AppCreateDto implements IAppInsert {
+
     @IsString()
     @IsOptional()
     version?: string | null | undefined;
