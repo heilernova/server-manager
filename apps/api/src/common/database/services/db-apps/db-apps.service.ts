@@ -2,15 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { DbConnection, uuid, AppColumns, IAppRow, IAppInsert, IAppUpdate } from '@api/common/database';
 
 @Injectable()
-export class DbAppsService {
+export class DbApplicationsService {
     private readonly fields: string = AppColumns();
     private readonly sql: string = 'select a.* from apps a inner join apps_users b on b.app_id = a.id where b.user_id = $1';
     constructor(private readonly _db: DbConnection){}
 
     async getAll(filter?: { userId?: uuid }): Promise<any[]> {
-        if (filter?.userId){
-        }
-        return (await this._db.query(`select * from applications`)).rows;
+        // if (filter?.userId){
+        // }
+        return (await this._db.query(`select * from vi_applications`)).rows;
         // return (await this._db.query(`select ${this.fields} from apps`)).rows;
     }
 
@@ -29,7 +29,7 @@ export class DbAppsService {
     }
 
     async create(data: IAppInsert){
-        let result = await this._db.insert('applications', data);
+        let result = await this._db.insert('applications', data, 'id');
         return result.rows[0]
     }
 

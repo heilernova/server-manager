@@ -1,12 +1,12 @@
 import { Body, Controller, Delete, Get, HttpException, Param, Post, Put, UseGuards } from '@nestjs/common';
-import { AppCreateDto, AppUpdateDto, DbAppsService, DbConnection, IAppRow, IUser, runtime_environment_list, uuid } from '@api/common/database';
+import { AppCreateDto, AppUpdateDto, DbApplicationsService, DbConnection, IAppRow, IUser, runtime_environment_list, uuid } from '@api/common/database';
 import { IsUUIDPipe } from '@api/common/pipes';
 import { GetSession, IsLoggedInGuard } from '@api/common/session';
 
 @UseGuards(IsLoggedInGuard)
 @Controller('apps')
 export class AppsController {
-    constructor(private readonly _dbApps: DbAppsService, private readonly _db: DbConnection){}
+    constructor(private readonly _dbApps: DbApplicationsService, private readonly _db: DbConnection){}
 
     @Post()
     async create(@GetSession() user: IUser, @Body() body: AppCreateDto){
@@ -18,7 +18,7 @@ export class AppsController {
         //     throw new HttpException(`Ya existe una aplicación con la ubicación [${body.location}]`, 400);
         // }
         let app = await this._dbApps.create(body as any);
-        // await this._db.insert('apps_access', { userId: user.id, appId: app.id, role: 'admin', deploy: true, edit: true });
+        await this._db.insert('applications_access', { userId: user.id, appId: app.id, role: 'admin', deploy: true, edit: true });
         // return app;
     }
 

@@ -1,4 +1,4 @@
-import { DbAppsService, IAppRow, IUser, uuid } from '@api/common/database';
+import { DbApplicationsService, IAppRow, IUser, uuid } from '@api/common/database';
 import { DeployService } from '@api/common/deploy';
 import { IsUUIDPipe } from '@api/common/pipes';
 import { GetSession, IsLoggedInGuard } from '@api/common/session';
@@ -9,7 +9,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 @Controller('deploy')
 export class DeployController {
 
-    constructor(private readonly _dbApps: DbAppsService, private readonly _deploy: DeployService){}
+    constructor(private readonly _dbApps: DbApplicationsService, private readonly _deploy: DeployService){}
 
     @Post()
     @UseInterceptors(FileInterceptor('zip'))

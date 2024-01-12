@@ -8,11 +8,11 @@ import * as extract from 'extract-zip';
 import { execSync } from 'node:child_process';
 
 import { Pm2Service } from '@api/common/pm2';
-import { DbAppsService, IAppRow, uuid } from '@api/common/database';
+import { DbApplicationsService, IAppRow, uuid } from '@api/common/database';
 
 @Injectable()
 export class DeployService {
-    constructor(private readonly _pm2: Pm2Service, private readonly _dbApps: DbAppsService){}
+    constructor(private readonly _pm2: Pm2Service, private readonly _dbApps: DbApplicationsService){}
 
     async run(app: IAppRow, zip: Buffer){
         switch(app.runtimeEnvironment){
