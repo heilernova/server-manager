@@ -1,0 +1,47 @@
+<div class="form">
+    <form nz-form>
+        <nz-form-item>
+          <nz-form-control>
+            <nz-input-group nzAddOnBefore="Nombre">
+                <input type="text" nz-input/>
+              </nz-input-group>
+          </nz-form-control>
+        </nz-form-item >
+
+        <nz-form-item>
+            <nz-form-control>
+              <nz-input-group nzAddOnBefore="Apellido" nz-col="2">
+                  <input type="text" nz-input/>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-control>
+              <nz-input-group nzAddOnBefore="Usuario">
+                  <input type="text" nz-input/>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-control>
+              <nz-input-group nzAddOnBefore="Correo electrónico">
+                  <input type="text" nz-input/>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+            <nz-form-control>
+              <nz-input-group nzAddOnBefore="Teléfono">
+                  <input type="text" nz-input/>
+                </nz-input-group>
+            </nz-form-control>
+        </nz-form-item>
+      </form>
+</div>
+<div class="flex">
+    <button nz-button (click)="onClickUpdatePassword()">Actualizar contraseña</button>
+    <button nz-button>Guardar cambios</button>
+</div>
