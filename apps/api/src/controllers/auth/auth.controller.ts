@@ -1,6 +1,7 @@
-import { Body, Controller, HttpException, Post } from '@nestjs/common';
-import { DbTokensService, DbUsersService, IUserAuth } from '@api/common/database';
+import { Body, Controller, Get, HttpException, Post, UseGuards } from '@nestjs/common';
+import { DbTokensService, DbUsersService, IUser, IUserAuth } from '@api/common/database';
 import { CredentialsDto } from './dto/credentials.dto';
+import { GetSession, IsLoggedInGuard } from '@api/common/session';
 
 @Controller()
 export class AuthController {
@@ -23,5 +24,15 @@ export class AuthController {
                 value: token.id
             },
         };
+    }
+
+    @UseGuards(IsLoggedInGuard)
+    @Get('verify-session')
+    async verifySession(@GetSession() session: IUser){
+        return {
+            role: session.role,
+            name: session.name,
+            lastName: session.lastName
+        }
     }
 }
