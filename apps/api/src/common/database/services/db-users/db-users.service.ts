@@ -30,7 +30,7 @@ export class DbUsersService {
     }
 
     async getForToken(token: uuid): Promise<IUser | undefined> {
-        const result = await this._db.query<IUser>(`select ${this.fieldsForToken} from users a inner join tokens b on b.user_id = a.id where b.id = $1`, [token]);
+        const result = await this._db.query<IUser>(`select ${this.fieldsForToken} from users a inner join users_tokens b on b.user_id = a.id where b.id = $1`, [token]);
         return result.rows[0] ?? undefined;
     }
 
