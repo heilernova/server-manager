@@ -8,6 +8,7 @@ import { NzModalRef, NzModalModule } from 'ng-zorro-antd/modal';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { ApiProfileService } from '@app/common/api/profile';
 
 @Component({
   selector: 'app-modal-update-password',
@@ -27,6 +28,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 })
 export class ModalUpdatePasswordComponent {
   private readonly _message = inject(NzMessageService);
+  private readonly _apiProfile = inject(ApiProfileService);
   public readonly disabled = signal<boolean>(true);
   public readonly loading = signal<boolean>(false);
   public readonly formGroup = new FormGroup({
@@ -60,9 +62,18 @@ export class ModalUpdatePasswordComponent {
     
     this._modal.getConfig().nzClosable = false;
     this._modal.getConfig().nzCancelDisabled = false;
+    this.formGroup.disable();
     this.loading.set(true);
-    setTimeout(() => {
-      this.loading.set(false);
-    }, 3000);
+    this._apiProfile.updatePassword({ currentPassword: values.currentPassword, newPassword: values.newPassword }).subscribe({
+      next: () => {
+        this.formGroup.enable();
+        this.loading.set(false);
+        this._message.success("Contraseña actualizada");
+        this._modal.destroy();
+      },
+      error: err => {
+        this.loading.set(false);
+      }
+    })
   }
 }
