@@ -8,3 +8,8 @@ body {
     display: flex;
     column-gap: 1em;
 }
+
+.ant-col-24.ant-form-item-label, .ant-col-xl-24.ant-form-item-label, .ant-form-vertical .ant-form-item-label {
+    padding: 0;
+    padding-left: .5em;
+}

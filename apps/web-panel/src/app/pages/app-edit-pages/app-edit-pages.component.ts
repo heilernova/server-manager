@@ -16,7 +16,8 @@ import { NzMessageService } from 'ng-zorro-antd/message';
     ReactiveFormsModule,
     NzInputModule,
     NzButtonComponent,
-    NzSelectModule
+    NzSelectModule,
+    NzFormModule
   ],
   templateUrl: './app-edit-pages.component.html',
   styleUrl: './app-edit-pages.component.scss'
@@ -38,7 +39,7 @@ export class AppEditPagesComponent {
     observation: new FormControl<string>('', { nonNullable: true, validators: Validators.required }),
     framework: new FormControl<string | null>(null, { nonNullable: true, validators: Validators.required }),
     runningOn: new FormControl<string | null>(null, { nonNullable: true, validators: Validators.required }),
-    runtimeEnvironment: new FormControl<string | null>(null, { nonNullable: true, validators: Validators.required }),
+    runtimeEnvironment: new FormControl<string | null>(null, { nonNullable: true }),
     ignore: new FormControl<string[]>([], { nonNullable: true, validators: Validators.required }),
     env: new FormArray<FormGroup<{ name: FormControl<string>, value: FormControl<string> }>>([])
   })
