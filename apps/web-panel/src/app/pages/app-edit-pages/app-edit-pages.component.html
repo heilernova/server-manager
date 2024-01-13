@@ -1,1 +1,79 @@
-<p>app-edit-pages works!</p>
+<section>
+    <h3>Información básica</h3>
+    <div [formGroup]="formGroup">
+        <!-- <nz-form-control nzErrorTip="Please input your username!"> -->
+        <nz-input-group>
+            <input nz-input placeholder="Dominio" formControlName="domain"/>
+        </nz-input-group>
+        <nz-input-group>
+            <input nz-input placeholder="Nombre" formControlName="name"/>
+        </nz-input-group>
+        <nz-input-group>
+            <input nz-input placeholder="Ubicación" formControlName="location"/>
+        </nz-input-group>
+        <nz-input-group>
+            <input nz-input placeholder="Archivo de inicio" formControlName="startupFile"/>
+        </nz-input-group>
+        <nz-input-group>
+            <input nz-input placeholder="URL" formControlName="url"/>
+        </nz-input-group>
+       
+        <textarea rows="2" nz-input placeholder="Observación" formControlName="observation"></textarea>
+    </div>
+</section>
+<section>
+    <h3>Despliegue</h3>
+    <div [formGroup]="formGroup">
+        <nz-select style="width: 9em;"  nzPlaceHolder="Framework" formControlName="framework">
+            <nz-option nzValue="Angular" nzLabel="Angular"></nz-option>
+            <nz-option nzValue="NestJS" nzLabel="NestJS"></nz-option>
+            <nz-option nzValue="FastAPI" nzLabel="FastAPI"></nz-option>
+        </nz-select>
+        <nz-select style="width: 18em;" nzPlaceHolder="Entorno de ejecución" formControlName="runtimeEnvironment">
+            <nz-option nzValue="Node.js" nzLabel="Node.js"></nz-option>
+            <nz-option nzValue="Python" nzLabel="Python"></nz-option>
+            <nz-option nzValue="PHP" nzLabel="PHP"></nz-option>
+        </nz-select>
+        <nz-select style="width: 15em;" nzPlaceHolder="Desplegado en" formControlName="runningOn">
+            <nz-option nzValue="PM2" nzLabel="PM2"></nz-option>
+            <nz-option nzValue="Docker" nzLabel="Docker"></nz-option>
+            <nz-option nzValue="LiteSpeed" nzLabel="LiteSpeed"></nz-option>
+            <nz-option nzValue="Apache" nzLabel="Apache"></nz-option>
+        </nz-select>
+        <nz-select formControlName="ignore" style="width: 100%;" nzMode="tags" [nzTokenSeparators]="[',']" nzPlaceHolder="Ignorara archivos o directorio">
+            <!-- <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option> -->
+        </nz-select>
+        <div>
+
+        </div>
+    </div>
+</section>
+<section>
+    <h3>Variables de entorno</h3>
+    <ul>
+        @for (envForm of formGroup.controls.env.controls; track i; let last = $last, first = $first, i = $index) {
+            <li [formGroup]="envForm">
+                <nz-input-group nzCompact>
+                    <div style="display: grid; grid-template-columns: auto 1fr auto;">
+                        <input type="text" nz-input formControlName="name" placeholder="Nombre" style="text-transform: uppercase; font-weight: 500;"/>
+                        <input type="text" nz-input formControlName="value" placeholder="Valor" />
+                        <div class="actions">
+                            <button nz-button [disabled]="first"><</button>
+                            <button nz-button [disabled]="last">></button>
+                            <button nz-button (click)="onClickDeleteEnv(i)">x</button>
+                        </div>
+                    </div>
+                </nz-input-group>
+            </li>
+        }
+        <div style="padding: 1em 0;">
+            <button nz-button (click)="onClickAddEnv()">Agrega variable de entorno</button>
+        </div>
+    </ul>
+</section>
+
+<section class="flex">
+    <button nz-button nzType="default" [nzLoading]="loading()" (click)="onClickSave()">Reiniciar aplicación</button>
+    <button nz-button nzType="default" [nzLoading]="loading()" (click)="onClickResetChanges()">Descartar cambios</button>
+    <button nz-button nzType="primary" [nzLoading]="loading()" (click)="onClickSave()">Guardar cambios</button>
+</section>

@@ -17,4 +17,8 @@ export class ApiAppsService {
   get(id: string){
     return this._http.get<IApplicationAPIResponse>(`apps/${id}`).pipe(map(res => new Application(res)));
   }
+
+  update(id: string, update: any){
+    return this._http.patch<void>(`apps/${id}`, update);
+  }
 }

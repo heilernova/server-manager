@@ -1,0 +1,14 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    row-gap: 2em;
+}
+ul {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    max-width: 600px;
+}
