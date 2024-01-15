@@ -2,11 +2,12 @@ import { Body, Controller, Delete, Get, HttpException, Param, Patch, Post, Put, 
 import { AppCreateDto, AppUpdateDto, DbApplicationsService, DbConnection, IAppRow, IApplication, IUser, runtime_environment_list, uuid } from '@api/common/database';
 import { IsUUIDPipe } from '@api/common/pipes';
 import { GetSession, IsLoggedInGuard } from '@api/common/session';
+import { Pm2Process, Pm2Service } from '@api/common/pm2';
 
 @UseGuards(IsLoggedInGuard)
 @Controller('apps')
 export class AppsController {
-    constructor(private readonly _dbApps: DbApplicationsService){}
+    constructor(private readonly _dbApps: DbApplicationsService, private readonly _pm2: Pm2Service){}
 
     @Post()
     async create(@GetSession() user: IUser, @Body() body: AppCreateDto){
@@ -43,9 +44,15 @@ export class AppsController {
 
     @Delete(':id')
     async delete(@Param('id', IsUUIDPipe) id: uuid, @GetSession() user: IUser){
-        let app: IAppRow | undefined = await this._dbApps.get(id, user.id);
+        let app: IApplication | undefined = await this._dbApps.get(id, user.id);
         if (app == undefined) throw new HttpException('App no encontrada', 404);
         if (user.role != 'admin') throw new HttpException('No tienes los permisos necesario para eliminar la aplicación', 403);
         await this._dbApps.delete(id);
+        if (app.runningOn == 'PM2'){
+            let process: Pm2Process | undefined =  this._pm2.getAll().find(x => x.name == id);
+            if (process){
+                this._pm2.delete(id);
+            }
+        }
     }
 }
