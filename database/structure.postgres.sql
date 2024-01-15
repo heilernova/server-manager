@@ -80,8 +80,8 @@ create table applications
 
 create table applications_access
 (
-    "app_id" uuid not null references applications(id),
-    "user_id" uuid not null references users(id),
+    "app_id" uuid not null references applications(id) on delete cascade,
+    "user_id" uuid not null references users(id) on delete cascade,
     "role" user_role default 'collaborator',
     "edit" boolean not null default false,
     "deploy" boolean not null default false,
