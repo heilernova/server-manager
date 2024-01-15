@@ -1,5 +1,5 @@
 import { PartialType } from "@nestjs/mapped-types";
-import { IsIn, IsObject, IsOptional, IsString } from "class-validator";
+import { IsIn, IsNotEmpty, IsObject, IsOptional, IsString } from "class-validator";
 
 import { Framework, IAppInsert, RunningOn, RuntimeEnvironment } from "@api/common/database";
 import { runtime_environment_list, framework_list,  running_on_list } from '@api/common/database/schemas/types';
@@ -11,13 +11,13 @@ export class AppCreateDto implements IAppInsert {
     version?: string | null | undefined;
 
     @IsString()
-    @IsOptional()
-    observations: string | null;
+    @IsNotEmpty()
+    domain: string;
 
     @IsString()
-    domain: string;
-    @IsString()
+    @IsNotEmpty()
     name: string;
+
     @IsString()
     @IsOptional()
     url: string | null;
@@ -41,11 +41,15 @@ export class AppCreateDto implements IAppInsert {
     @IsObject()
     @IsOptional()
     env: { [key: string]: any };
+    
     @IsString()
+    @IsNotEmpty()
     location: string;
+    
     @IsString({ each: true})
     @IsOptional()
     ignore: string[];
+    
     @IsString()
     @IsOptional()
     observation?: string | null;
