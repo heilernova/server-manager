@@ -8,24 +8,19 @@ import * as extract from 'extract-zip';
 import { execSync } from 'node:child_process';
 
 import { Pm2Service } from '@api/common/pm2';
-import { DbApplicationsService, IAppRow, uuid } from '@api/common/database';
+import { DbApplicationsService, IAppRow, IApplication, uuid } from '@api/common/database';
 
 @Injectable()
 export class DeployService {
     constructor(private readonly _pm2: Pm2Service, private readonly _dbApps: DbApplicationsService){}
 
-    async run(app: IAppRow, zip: Buffer){
-        switch(app.runtimeEnvironment){
-            case 'Node.js':
-                return this.runForNode(app, zip);
-            case 'PHP':
-                throw Error("No hay soporte para PHP");
-                break;
-            case 'Python':
-                throw Error("No hay soporte para python");
-                break;
-            case null:
-                break;
+    async run(app: IApplication, zip: Buffer){
+        switch(app.framework){
+            case 'Angular': return this.runForAngular(app, zip);
+            case 'NestJS': return null;
+            case 'FastAPI': return null;
+            case null: return null;
+            default: return null;
         }
     }
 
@@ -45,6 +40,17 @@ export class DeployService {
         rmSync(name);
     }
 
+    private async runForAngular(app: IApplication,  buffer: Buffer){
+        let location: string = app.location;
+        await this.clearDir(location, app.ignore);
+        await this.extractFiles(app.id, location, buffer);
+        if (app.runtimeEnvironment == 'Node.js' && app.startupFile){
+            // Utilizaremos PM2 para levantar el servidor
+            this._pm2.start(location, app.startupFile, app.id, app.env);
+        }
+        return true;
+    }
+
     private async runForNode(app: IAppRow, zip: Buffer){
         let locationApp: string = join(app.location, 'app');
         let currentPackage: { [p: string]: any } | undefined;
@@ -59,7 +65,7 @@ export class DeployService {
         }
 
         if (app.runningOn == 'PM2' && app.startupFile){
-            let nameProcess: string = `${app.domain}-${app.name}`.toLowerCase();
+            let nameProcess: uuid = app.id;
             let process = this._pm2.getAll().find(x => x.name == nameProcess);
             if (process){
                 this._pm2.reload(nameProcess, app.env);
@@ -84,7 +90,7 @@ export class DeployService {
 
     async angular(app: IAppRow){
         if (app.runningOn == 'PM2' && app.startupFile){
-            let nameProcess: string = `${app.domain}-${app.name}`.toLowerCase();
+            let nameProcess: uuid =  app.id;
             let process = this._pm2.getAll().find(x => x.name == nameProcess);
             if (process){
                 this._pm2.reload(nameProcess, app.env);
@@ -101,7 +107,7 @@ export class DeployService {
         }
 
         if (app.runtimeEnvironment == 'Node.js' && app.runningOn == 'PM2' && app.startupFile){
-            let name: string = `${app.domain}-${app.name}`.toLowerCase();
+            let name: uuid = app.id;
             let process = this._pm2.getAll().find(x => x.name == name);
             if (process){
                 this._pm2.reload(name, app.env);
