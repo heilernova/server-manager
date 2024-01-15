@@ -1,4 +1,4 @@
-import { DbApplicationsService, IAppRow, IUser, uuid } from '@api/common/database';
+import { DbApplicationsService, IApplication, IUser, uuid } from '@api/common/database';
 import { DeployService } from '@api/common/deploy';
 import { IsUUIDPipe } from '@api/common/pipes';
 import { GetSession, IsLoggedInGuard } from '@api/common/session';
@@ -18,14 +18,16 @@ export class DeployController {
         @GetSession() user: IUser, 
         @UploadedFile(new ParseFilePipe({ validators: [  new FileTypeValidator({ fileType: 'zip' }) ]}))  file: Express.Multer.File
     ){
-        let app: IAppRow | undefined = await this._dbApps.get(id, user.id);
+        let app: IApplication | undefined = await this._dbApps.get(id, user.id);
         if (!app) throw new HttpException('Aplicación no encontrada', 400);
-        let res = await this._deploy.run(app, file.buffer);
+        let res: any = await this._deploy.run(app, file.buffer);
         if (res){
             return {
                 name: res.name,
                 status: res.pm2_env.status
             }
+        } else {
+            return {}
         }
     }
 }
