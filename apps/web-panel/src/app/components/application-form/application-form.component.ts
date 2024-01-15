@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
@@ -44,10 +44,11 @@ export class ApplicationFormComponent {
 
   private _modal: NzModalService = inject(NzModalService);
   private _application: Application | null = null;
-
+  public readonly controlsApp = signal<boolean>(false);
   @Input()
   set data(value: Application){
     this._application = value;
+    this.controlsApp.set(true);
     this.formGroup.setValue({
       domain: value.domain,
       name: value.name,
@@ -155,6 +156,22 @@ export class ApplicationFormComponent {
         }
       }
     })
+  }
+
+  onReload(){
+    if (this._application){
+      this._apiApps.reload(this._application.id).subscribe({
+        next: res => {
+          this._message.success("Aplicación reiniciada");
+        },
+        error: err => {
+          if (err instanceof HttpErrorResponse){
+            this._message.error(err.error.message ?? err.message);
+          }
+          this._message.error("Error al reiniciar la aplicación");
+        }
+      })
+    }
   }
 
   onDelete(){

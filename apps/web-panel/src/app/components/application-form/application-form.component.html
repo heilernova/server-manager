@@ -102,9 +102,11 @@
     </div>
 </section>
 <section class="actions">
-    <button nz-button (click)="onDelete()">Eliminar</button>
-    <button nz-button>Detener</button>
-    <button nz-button>Reiniciar</button>
+    @if (controlsApp()) {
+        <button nz-button (click)="onDelete()">Eliminar</button>
+        <button nz-button>Detener</button>
+        <button nz-button (click)="onReload()">Reiniciar</button>
+    }
     <button nz-button>Descartar cambios</button>
     <button nz-button (click)="onSave()">Guardar</button>
 </section>

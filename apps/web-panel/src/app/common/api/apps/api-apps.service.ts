@@ -29,6 +29,10 @@ export class ApiAppsService {
   delete(id: string){
     return this._http.delete<void>(`apps/${id}`);
   }
+
+  reload(id: string){
+    return this._http.put<void>(`apps/${id}`, undefined);
+  }
 }
 
 export interface IApplicationCreate {
