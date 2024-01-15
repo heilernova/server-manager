@@ -87,9 +87,9 @@
                         </nz-form-control>
                     </nz-form-item>
                     <div>
-                        <button nz-button><></button>
-                        <button nz-button (click)="onClickRemoveEnvironment(i)">-</button>
-                        <button nz-button (click)="onClickAddEnvironment(i)">+</button>
+                        <button nz-button [disabled]="buttonDisable()"><></button>
+                        <button nz-button [disabled]="buttonDisable()" (click)="onClickRemoveEnvironment(i)">-</button>
+                        <button nz-button [disabled]="buttonDisable()" (click)="onClickAddEnvironment(i)">+</button>
 
                     </div>
                 </li>
@@ -103,10 +103,10 @@
 </section>
 <section class="actions">
     @if (controlsApp()) {
-        <button nz-button (click)="onDelete()">Eliminar</button>
-        <button nz-button>Detener</button>
-        <button nz-button (click)="onReload()">Reiniciar</button>
+        <button nz-button (click)="onDelete()" [disabled]="buttonDisable()">Eliminar</button>
+        <button nz-button [disabled]="buttonDisable()">Detener</button>
+        <button nz-button (click)="onReload()" [disabled]="buttonDisable()">Reiniciar</button>
     }
-    <button nz-button>Descartar cambios</button>
-    <button nz-button (click)="onSave()">Guardar</button>
+    <button nz-button [disabled]="buttonDisable()">Descartar cambios</button>
+    <button nz-button (click)="onSave()" [nzLoading]="buttonSaveLoading()">Guardar</button>
 </section>

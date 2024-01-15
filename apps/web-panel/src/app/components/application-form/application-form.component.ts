@@ -30,6 +30,10 @@ import { ApiAppsService, Application, Framework, RunningOn, RuntimeEnvironment }
 export class ApplicationFormComponent {
   private readonly _apiApps = inject(ApiAppsService);
   private readonly _message = inject(NzMessageService);
+  
+  public readonly buttonSaveLoading = signal<boolean>(false);
+  public readonly buttonDisable = signal<boolean>(false);
+
   formGroup = new FormGroup({
     domain: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.pattern(/[^\s/$.?#].[^\s]*$/i)]}),
     name: new FormControl('', { nonNullable: true, validators: [Validators.required]}),
@@ -108,7 +112,9 @@ export class ApplicationFormComponent {
     values.env.forEach(value => {
       env[value.name.toUpperCase()] = value.value.toString();
     });
-    
+    this.formGroup.disable();
+    this.buttonSaveLoading.set(true);
+    this.buttonDisable.set(true);
     if (this._application){
       this._apiApps.update(this._application.id, {
         domain: values.domain,
@@ -122,9 +128,15 @@ export class ApplicationFormComponent {
         env
       }).subscribe({
         next: res => {
+          this.buttonSaveLoading.set(false);
+          this.buttonDisable.set(false);
+          this.formGroup.enable();
           this._message.success("Datos actualizados");
         },
         error: err => {
+          this.formGroup.enable();
+          this.buttonSaveLoading.set(false);
+          this.buttonDisable.set(false);
           if (err instanceof HttpErrorResponse){
             this._message.error(err.error.message ?? err.message);
           } else {
@@ -146,9 +158,15 @@ export class ApplicationFormComponent {
       env
     }).subscribe({
       next: response => {
+        this.buttonDisable.set(false);
+        this.formGroup.enable();
+        this.buttonSaveLoading.set(false);
         console.log(response);
       },
       error: err => {
+        this.buttonDisable.set(false);
+        this.formGroup.enable();
+        this.buttonSaveLoading.set(false);
         if (err instanceof HttpErrorResponse){
           this._message.error(err.error.message ?? err.message);
         } else {
