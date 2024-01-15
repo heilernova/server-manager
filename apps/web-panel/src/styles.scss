@@ -13,3 +13,10 @@ body {
     padding: 0;
     padding-left: .5em;
 }
+
+.uppercase {
+    text-transform: uppercase;
+    &::placeholder {
+        text-transform: none;
+    }
+}

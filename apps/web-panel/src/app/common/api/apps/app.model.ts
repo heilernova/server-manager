@@ -1,3 +1,5 @@
+import { Framework, RunningOn, RuntimeEnvironment } from "./api-apps.service";
+
 export class Application {
     id!: string;
     createAt!: Date;
@@ -8,9 +10,9 @@ export class Application {
     version!: string | null;
     location!: string;
     startupFile!: string | null;
-    framework!: string;
-    runningOn!: string;
-    runtimeEnvironment!: string;
+    framework!: Framework;
+    runningOn!: RunningOn;
+    runtimeEnvironment!: RuntimeEnvironment;
     url!: string | null;
     github!: {
         url: string;
@@ -54,9 +56,9 @@ export interface IApplicationAPIResponse {
     version: string | null;
     location: string;
     startupFile: string | null;
-    framework: string;
-    runningOn: string;
-    runtimeEnvironment: string;
+    framework: Framework;
+    runningOn: RunningOn;
+    runtimeEnvironment: RuntimeEnvironment;
     url: string | null;
     github: {
         url: string;

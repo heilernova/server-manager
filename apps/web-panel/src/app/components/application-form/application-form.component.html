@@ -1,0 +1,110 @@
+<section>
+    <div nz-form [formGroup]="formGroup" nzLayout="vertical">
+        <div class="flex">
+            <nz-form-item style="width: 25em;">
+                <nz-form-label nzRequired>Dominio</nz-form-label>
+                <nz-form-control>
+                    <input nz-input placeholder="Dominio" formControlName="domain" class="lowercase"/>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label nzRequired>Nombre</nz-form-label>
+                <nz-form-control>
+                    <input nz-input placeholder="Dominio" formControlName="name" class="lowercase"/>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <nz-form-item>
+            <nz-form-label nzRequired>Ubicación</nz-form-label>
+            <nz-form-control>
+                <input nz-input placeholder="Ubicación" formControlName="location" class="lowercase"/>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label>Archivo de arrange (Startup file)</nz-form-label>
+            <nz-form-control>
+                <input nz-input placeholder="Archivo de arrange ejemplo: main.js, index.html, index.php" formControlName="startupFile" class="lowercase"/>
+            </nz-form-control>
+        </nz-form-item>
+        
+        <div class="flex">
+            <nz-form-item>
+                <nz-form-label>Entorno de ejecución</nz-form-label>
+                <nz-form-control>
+                    <nz-select style="width: 18em;" nzPlaceHolder="Entorno de ejecución" nzAllowClear formControlName="runtimeEnvironment">
+                        <nz-option nzValue="Node.js" nzLabel="Node.js"/>
+                        <nz-option nzValue="Python" nzLabel="Python"/>
+                        <nz-option nzValue="PHP" nzLabel="PHP"/>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+    
+            <nz-form-item>
+                <nz-form-label>Framework</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzAllowClear style="width: 9em;"  nzPlaceHolder="Framework" formControlName="framework" >
+                        <nz-option nzValue="Angular" nzLabel="Angular"/>
+                        <nz-option nzValue="NestJS" nzLabel="NestJS"/>
+                        <nz-option nzValue="FastAPI" nzLabel="FastAPI"/>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+    
+            <nz-form-item>
+                <nz-form-label>Desplegado en</nz-form-label>
+                <nz-form-control>
+                    <nz-select style="width: 15em;" nzPlaceHolder="Desplegado en" formControlName="runningOn">
+                        <nz-option nzValue="PM2" nzLabel="PM2"/>
+                        <nz-option nzValue="Docker" nzLabel="Docker"/>
+                        <nz-option nzValue="LiteSpeed" nzLabel="LiteSpeed"/>
+                        <nz-option nzValue="Apache" nzLabel="Apache"/>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>    
+        </div>
+        <nz-form-item>
+            <nz-form-label>Ignorara archivos o directorio</nz-form-label>
+            <nz-form-control>
+                <nz-select formControlName="ignore" style="width: 100%;" nzMode="tags" [nzTokenSeparators]="[',']" nzPlaceHolder="Ignorara archivos o directorio">
+                    <!-- <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option> -->
+                </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div>
+        <h4>Variables de entorno</h4>
+        <ul>
+            @for (form of formGroup.controls.env.controls; track i; let i = $index) {
+                <li [formGroup]="form" class="form-env" nz-form nzLayout="inline" >
+                    <nz-form-item>
+                        <nz-form-control>
+                            <input type="text" formControlName="name" placeholder="Key" nz-input class="uppercase"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item>
+                        <nz-form-control>
+                            <input type="text" formControlName="value" placeholder="Valor" nz-input/>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <div>
+                        <button nz-button><></button>
+                        <button nz-button (click)="onClickRemoveEnvironment(i)">-</button>
+                        <button nz-button (click)="onClickAddEnvironment(i)">+</button>
+
+                    </div>
+                </li>
+            } @empty {
+                <div>
+                    <button nz-button (click)="onClickAddEnvironment(-1)">Agregar variable de entorno</button>
+                </div>
+            }
+        </ul>
+    </div>
+</section>
+<section class="actions">
+    <button nz-button (click)="onDelete()">Eliminar</button>
+    <button nz-button>Detener</button>
+    <button nz-button>Reiniciar</button>
+    <button nz-button>Descartar cambios</button>
+    <button nz-button (click)="onSave()">Guardar</button>
+</section>
