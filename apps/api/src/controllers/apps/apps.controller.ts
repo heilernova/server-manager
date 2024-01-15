@@ -55,4 +55,14 @@ export class AppsController {
             }
         }
     }
+
+    @Put(':id/reload')
+    async reload(@Param('id', IsUUIDPipe) id: uuid, @GetSession() user: IUser){
+        let app: IApplication | undefined = await this._dbApps.get(id, user.id);
+        if (app == undefined) throw new HttpException('App no encontrada', 404);
+        if (!app.permits.edit) throw new HttpException("No tienes permisos para actualizar la información", 403);
+        if (app.runningOn == 'PM2'){
+            this._pm2.reload(app.id, app.env);
+        }
+    }
 }
