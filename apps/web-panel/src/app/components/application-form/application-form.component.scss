@@ -9,6 +9,13 @@ ul {
     padding: 0;
     margin: 0;
     list-style: none;
+    row-gap: .4em;
+    li {
+        .btn-actions {
+            display: flex;
+            column-gap: .5em;
+        }
+    }
 }
 
 .actions {

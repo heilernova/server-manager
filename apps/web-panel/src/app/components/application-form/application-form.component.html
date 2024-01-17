@@ -86,11 +86,10 @@
                             <input type="text" formControlName="value" placeholder="Valor" nz-input/>
                         </nz-form-control>
                     </nz-form-item>
-                    <div>
+                    <div class="btn-actions">
                         <button nz-button [disabled]="buttonDisable()"><></button>
                         <button nz-button [disabled]="buttonDisable()" (click)="onClickRemoveEnvironment(i)">-</button>
                         <button nz-button [disabled]="buttonDisable()" (click)="onClickAddEnvironment(i)">+</button>
-
                     </div>
                 </li>
             } @empty {
