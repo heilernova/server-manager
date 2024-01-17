@@ -10,9 +10,16 @@ header {
     display: grid;
     grid-template-columns: 1fr auto;
     padding: .5em 1em;
+    border-bottom: 1px solid rgba(216, 213, 213, 0.61);
+    height: 35px;
 }
 aside {
     grid-area: aside;
+    background-color: ghostwhite;
+    padding: .5em 1em;
+    .logo {
+        height: 35px;
+    }
     nav {
         ul {
             display: flex;
@@ -22,11 +29,15 @@ aside {
             margin: 0;
             padding: 0;
             li {
-                padding: .3em;
+                padding: .3em .8em;
                 border-radius: 5px;
                 cursor: pointer;
                 &:hover {
-                    background-color: bisque;
+                    background-color: gainsboro;
+                }
+                &.active {
+                    background-color: #5f9eda;
+                    color: whitesmoke;
                 }
             }
         }
@@ -38,4 +49,7 @@ section {
 }
 footer {
     grid-area: footer;
+    background-color: black;
+    color: gainsboro;
+    padding: .5em 1em;
 }
