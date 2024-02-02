@@ -95,6 +95,22 @@ export class ApplicationFormComponent {
     this.formGroup.controls.env.removeAt(index);
   }
 
+  onClickDownEnvironment(index: number): void {
+    let env = this.formGroup.controls.env;
+    let newIndex: number = index + 1;
+    if (newIndex > env.controls.length - 1) newIndex = env.controls.length - 1;
+    let control = env.controls.splice(index, 1);
+    this.formGroup.controls.env.controls.splice(newIndex, 0, control[0]);
+  }
+  
+  onClickUpEnvironment(index: number): void {
+    let env = this.formGroup.controls.env;
+    let newIndex: number = index - 1;
+    if (newIndex < 0) newIndex = 0;
+    let control = env.controls.splice(index, 1);
+    this.formGroup.controls.env.controls.splice(newIndex, 0, control[0]);
+  }
+
   onSave(): void {
     if (this.formGroup.invalid){
       this._message.warning("Faltan campos por completar");
@@ -102,6 +118,14 @@ export class ApplicationFormComponent {
         if (control.invalid) {
           control.markAsDirty();
           control.updateValueAndValidity({ onlySelf: true });
+          if (control instanceof FormArray){
+            control.controls.forEach(item => {
+              Object.values(item.controls).forEach(x => {
+                x.markAsDirty();
+                x.updateValueAndValidity({ onlySelf: true })
+              })
+            })
+          }
         }
       });
       return;

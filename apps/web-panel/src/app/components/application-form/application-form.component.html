@@ -64,7 +64,7 @@
                 <input nz-input placeholder="Archivo de arrange ejemplo: main.js, index.html, index.php" formControlName="startupFile" class="lowercase"/>
             </nz-form-control>
         </nz-form-item>
-        
+
         <nz-form-item>
             <nz-form-label>Ignorara archivos o directorio</nz-form-label>
             <nz-form-control>
@@ -77,7 +77,7 @@
     <div>
         <h4>Variables de entorno</h4>
         <ul>
-            @for (form of formGroup.controls.env.controls; track i; let i = $index) {
+            @for (form of formGroup.controls.env.controls; track i; let i = $index, last = $last, first = $first) {
                 <li [formGroup]="form" class="form-env" nz-form nzLayout="inline" >
                     <nz-form-item>
                         <nz-form-control>
@@ -90,9 +90,18 @@
                         </nz-form-control>
                     </nz-form-item>
                     <div class="btn-actions">
-                        <button nz-button [disabled]="buttonDisable()"><></button>
-                        <button nz-button [disabled]="buttonDisable()" (click)="onClickRemoveEnvironment(i)">-</button>
-                        <button nz-button [disabled]="buttonDisable()" (click)="onClickAddEnvironment(i)">+</button>
+                        <button nz-button [disabled]="buttonDisable() || first" tabIndex="-1" (click)="onClickUpEnvironment(i)">
+                            <i class="fa-solid fa-arrow-up"></i>
+                        </button>
+                        <button nz-button [disabled]="buttonDisable() || last" tabIndex="-1" (click)="onClickDownEnvironment(i)">
+                            <i class="fa-solid fa-arrow-down"></i>
+                        </button>
+                        <button nz-button [disabled]="buttonDisable()" (click)="onClickRemoveEnvironment(i)" tabIndex="-1">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                        <button nz-button [disabled]="buttonDisable()" (click)="onClickAddEnvironment(i)" tabIndex="-1">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
                     </div>
                 </li>
             } @empty {
@@ -109,6 +118,16 @@
         <button nz-button [disabled]="buttonDisable()">Detener</button>
         <button nz-button (click)="onReload()" [disabled]="buttonDisable()">Reiniciar</button>
     }
-    <button nz-button [disabled]="buttonDisable()">Descartar cambios</button>
-    <button nz-button (click)="onSave()" [nzLoading]="buttonSaveLoading()">Guardar</button>
+    <button nz-button [disabled]="buttonDisable()">
+        <div style="display: flex; column-gap: .5em; align-items: center;">
+            <i class="fa-solid fa-xmark"></i>
+            Descartar
+        </div>
+    </button>
+    <button nz-button (click)="onSave()" [nzLoading]="buttonSaveLoading()">
+        <div style="display: flex; column-gap: .5em; align-items: center;">
+            <i class="fa-solid fa-floppy-disk"></i>
+            Guardar
+        </div>
+    </button>
 </section>
