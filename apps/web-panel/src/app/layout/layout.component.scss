@@ -46,6 +46,9 @@ aside {
 section {
     grid-area: page;
     padding: 1em;
+    .page-content {
+        height: 100%;
+    }
 }
 footer {
     grid-area: footer;

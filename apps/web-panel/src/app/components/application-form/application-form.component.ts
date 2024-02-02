@@ -11,6 +11,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 
 import { ApiAppsService, Application, Framework, RunningOn, RuntimeEnvironment } from '@app/common/api/apps';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-application-form',
@@ -30,6 +31,7 @@ import { ApiAppsService, Application, Framework, RunningOn, RuntimeEnvironment }
 export class ApplicationFormComponent {
   private readonly _apiApps = inject(ApiAppsService);
   private readonly _message = inject(NzMessageService);
+  private readonly _router = inject(Router);
   
   public readonly buttonSaveLoading = signal<boolean>(false);
   public readonly buttonDisable = signal<boolean>(false);
@@ -186,6 +188,8 @@ export class ApplicationFormComponent {
         this.formGroup.enable();
         this.buttonSaveLoading.set(false);
         console.log(response);
+        this._message.success("Aplicación creada");
+        this._router.navigate(['/apps', response.id]);
       },
       error: err => {
         this.buttonDisable.set(false);

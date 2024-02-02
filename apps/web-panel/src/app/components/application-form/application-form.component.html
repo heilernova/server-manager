@@ -119,15 +119,9 @@
         <button nz-button (click)="onReload()" [disabled]="buttonDisable()">Reiniciar</button>
     }
     <button nz-button [disabled]="buttonDisable()">
-        <div style="display: flex; column-gap: .5em; align-items: center;">
-            <i class="fa-solid fa-xmark"></i>
-            Descartar
-        </div>
+        Descartar
     </button>
     <button nz-button (click)="onSave()" [nzLoading]="buttonSaveLoading()">
-        <div style="display: flex; column-gap: .5em; align-items: center;">
-            <i class="fa-solid fa-floppy-disk"></i>
-            Guardar
-        </div>
+        Guardar
     </button>
 </section>

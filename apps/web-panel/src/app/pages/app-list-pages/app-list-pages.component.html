@@ -1,8 +1,42 @@
-<button routerLink="create">Crear aplicación</button>
-<ul>
+ <!--<section>
+    <ul>
+        @for (app of list(); track $index) {
+            <li>
+                {{app.domain}} | {{app.name}} | {{app.status}}
+                <button nz-button [routerLink]="app.id">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    Editar
+                </button>
+            </li>
+        }
+    </ul> 
+
+</section>-->
+
+<section class="card-container">
     @for (app of list(); track $index) {
-        <li>
-            {{app.domain}} | {{app.name}} | {{app.status}} | <a [routerLink]="app.id">Editar</a>
-        </li>
+        <nz-card class="card" >
+            <div>
+                <div style="text-transform: uppercase;">
+                    {{app.domain}}
+                </div>
+                <div>{{app.name}}</div>
+                <div>{{app.status}}</div>
+                <div class="actions">
+                    <button nz-button [routerLink]="app.id"><i class="fa-solid fa-pen-to-square"></i></button>
+                </div>
+            </div>
+            <!-- <nz-card-meta nzTitle="titulo" nzDescription="HOla mundo"/>
+            <div>
+            </div> -->
+        </nz-card>
+        <!-- <div class="card">
+            <div class="actions">
+                <button nz-button><i class="fa-solid fa-pen-to-square"></i></button>
+            </div>
+        </div> -->
     }
-</ul>
+</section>
+<section>
+    <button routerLink="create" nz-button>Crear aplicación</button>
+</section>
