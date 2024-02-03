@@ -14,6 +14,7 @@ export const routes: Routes = [
             { path: 'apps', loadComponent: () => import('./pages/app-list-pages/app-list-pages.component').then(x => x.AppListPagesComponent) },
             { path: 'apps/create', loadComponent: () => import('./pages/app-create-pages/app-create-pages.component').then(x => x.AppCreatePagesComponent) },
             { path: 'apps/:id', resolve: { application: appEditPageResolver }, loadComponent: () => import('./pages/app-edit-pages/app-edit-pages.component').then(x => x.AppEditPagesComponent) },
+            { path: 'pm2', loadComponent: () => import('./pages/pm2-process-page/pm2-process-page.component').then(x => x.Pm2ProcessPageComponent) }
         ]
     }
 ];
