@@ -1,6 +1,13 @@
 <header>
-    <div>
-        title
+    <div class="breadcrumb-container">
+        @for (item of breadcrumbs(); track $index; let last = $last) {
+            <span [routerLink]="item.link" style="cursor: pointer;">
+                {{item.name}}
+            </span>
+            @if (!last){
+                <i class="fa-solid fa-chevron-right"></i> 
+            }
+        }
     </div>
     <div style="cursor: pointer;" nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
         {{nameUser()}}
@@ -27,7 +34,7 @@
 </aside>
 <section>
     <div class="page-content">
-        <router-outlet/>
+        <router-outlet (activate)="onChangeRouterOutlet($event)"/>
     </div>
 </section>
 <footer>

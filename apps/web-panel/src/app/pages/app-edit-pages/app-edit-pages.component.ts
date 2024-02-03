@@ -10,6 +10,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { ApplicationFormComponent } from '@app/components/application-form/application-form.component';
+import { Breadcrumbs } from '@app/layout/breadcrumbs.interfaces';
 
 @Component({
   selector: 'app-app-edit-pages',
@@ -30,9 +31,11 @@ export class AppEditPagesComponent {
   private _activatedRoute = inject(ActivatedRoute);
   private _message = inject(NzMessageService);
   public readonly application: Application;
+  public breadcrumbs: Breadcrumbs[];
 
   constructor(){
     this.application = this._activatedRoute.snapshot.data['application'];
+    this.breadcrumbs =  [{ name: "Apps", slug: 'apps' }, { name: this.application.id, slug: this.application.id }];
   }
 
  

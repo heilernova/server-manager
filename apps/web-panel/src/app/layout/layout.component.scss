@@ -12,6 +12,11 @@ header {
     padding: .5em 1em;
     border-bottom: 1px solid rgba(216, 213, 213, 0.61);
     height: 35px;
+    .breadcrumb-container {
+        i {
+            font-size: 13px;
+        }
+    }
 }
 aside {
     grid-area: aside;

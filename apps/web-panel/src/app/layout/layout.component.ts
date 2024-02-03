@@ -8,6 +8,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 
 import { FormLoginSessionComponent } from '@app/components/form-login-session';
 import { Router, RouterModule } from '@angular/router';
+import { Breadcrumb, Breadcrumbs } from './breadcrumbs.interfaces';
 
 @Component({
   selector: 'app-layout',
@@ -27,6 +28,7 @@ export class LayoutComponent {
   private readonly _sessions = inject(SessionService);
   private readonly _router = inject(Router);
   public readonly openNewSession = signal<boolean>(false);
+  public readonly breadcrumbs = signal<Breadcrumb[]>([]);
   nameUser = signal<string>('');
 
   constructor(){
@@ -48,6 +50,21 @@ export class LayoutComponent {
         this._sessions.user = null;
         this._router.navigate(['/login']);
       })
+    }
+  }
+
+  onChangeRouterOutlet(e: any){
+    if (e.breadcrumbs){
+      let url: string[] = [];
+      let list = e.breadcrumbs as Breadcrumbs[];
+      let result = list.map<Breadcrumb>(item => {
+        url.push(item.slug);
+        return {
+          name: item.name,
+          link: structuredClone(url)
+        }
+      });
+      this.breadcrumbs.set(result);
     }
   }
 }

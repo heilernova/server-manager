@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ApiAppsService, Application } from '@app/common/api/apps';
+import { Breadcrumbs } from '@app/layout';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
 
@@ -18,6 +19,8 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 })
 export class AppListPagesComponent {
   private readonly _apiApps = inject(ApiAppsService);
+
+  public breadcrumbs: Breadcrumbs[] = [{ name: 'Apps', slug: 'apps'  }]
 
   public readonly list = signal<Application[]>([]);
   constructor(){
