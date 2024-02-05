@@ -36,7 +36,7 @@ export const deploy = async () => {
         console.log(chalk.redBright(`There is no session for ${project.deployIn}`));
         process.exit();
     }
-    http = inject.httpClient().authentication(session.authentication);
+    http = inject.httpClient().server(session);
     // Generamos el archivo ZIP
     let stream = await generareZip(project);
     formData = new FormData();
@@ -44,16 +44,17 @@ export const deploy = async () => {
     formData.append('zip', stream);
 
     startSpinner('Deploying application to the server');
-    http.post(`${project.deployIn}/deploy`, formData)
+    http.post(`deploy`, formData)
     .then(response => {
         if (response.data.status == 'online'){
             stopSpinner('Deployment completed', '✔');
         } else {
             stopSpinner('The application does not work correctly', '✘');
         }
+        console.log(response.data);
     })
     .catch((err: Response) => {
-        stopSpinner(`Error: ${err.data.message}`, '✘');
+        stopSpinner(`[${err.status}] Error: ${err.data.message}`, '✘');
     })
 }
 
@@ -66,9 +67,9 @@ const generareZip = (project: IProject) => {
                 stopSpinner(`Directory not found ${project.location}`, '✘');
                 process.exit(0);
             }
-            const ouput = createWriteStream(zipName);
+            const ouPut = createWriteStream(zipName);
             const archive = archiver('zip');
-            archive.pipe(ouput);
+            archive.pipe(ouPut);
             archive.directory(project.location, false);
             project.include.forEach((filename: string) => {
                 archive.file(filename, { name: basename(filename) });

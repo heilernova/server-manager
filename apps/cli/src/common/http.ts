@@ -1,6 +1,7 @@
 import axios from "axios";
 import { AxiosResponse } from "axios";
 import { stopSpinner } from "./spinner.js";
+import { IServer } from "../config/config.interfaces.js";
 
 export type Authentication = { type: 'JWT', value: string } | { type: 'key', name: string, value: string };
 type Method = 'GET' | 'POST' | 'DELETE' | 'PATCH';
@@ -8,25 +9,26 @@ type Body = { [key:string]: any } | FormData;
 
 export class HttpClient {
     private readonly _authentication?: Authentication;
+    private readonly _server?: IServer;
 
-    constructor(authentication?: Authentication){
-        this._authentication = authentication;
+    constructor(server?: IServer){
+        if (server) this._server = server;
     }
 
-    private send(url: string, method: Method, body?: Body, headers?: { [key: string]: string }){
-        return new Promise<AxiosResponse<any, any>>((resolve, reject) => {
+    private send<R = any>(url: string, method: Method, body?: Body, headers?: { [key: string]: string }){
+        return new Promise<AxiosResponse<R, any>>((resolve, reject) => {
 
             let headers: { [key: string]: string } | undefined;
 
-            if (this._authentication){
+            if (this._server){
+                url = `${this._server.url}/${url}`;
                 headers = {};
-                if (this._authentication.type == 'JWT'){
-                    headers['authorization'] = `Bearer ${this._authentication.value}`;
+                if (this._server.authorization.type == 'JWT'){
+                    headers['authorization'] = `Bearer ${this._server.authorization.value}`;
                 } else {
-                    headers[this._authentication.name] = this._authentication.value;
+                    headers[this._server.authorization.name] = this._server.authorization.value;
                 }
             }
-
             axios({ url, method, data: body, headers })
             .then(res => resolve(res))
             .catch(err => {
@@ -43,12 +45,16 @@ export class HttpClient {
         })
     }
 
-    authentication(auth: Authentication): HttpClient {
-        return new HttpClient(auth);
+    // authentication(auth: Authentication): HttpClient {
+    //     // return new HttpClient(auth);
+    // }
+
+    server(server: IServer){
+        return new HttpClient(server);
     }
 
-    post(url: string, body: Body){
-        return this.send(url, 'POST', body);
+    post<R = any>(url: string, body: Body){
+        return this.send<R>(url, 'POST', body);
     }
     get(url: string){
         return this.send(url, 'GET');

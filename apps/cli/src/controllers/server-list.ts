@@ -7,7 +7,7 @@ export const serverListController = () => {
             return {
                 url: x.url,
                 username: x.username,
-                authentication: x.authentication.type == 'key' ? 'APP-KEY' :  'JWT'
+                authentication: x.authorization.type
             }
         }))
     } else {

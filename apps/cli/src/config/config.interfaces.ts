@@ -3,7 +3,7 @@ import { Authentication } from "../common/http.js";
 export interface IServer {
     url: string,
     username: string,
-    authentication: Authentication;
+    authorization: Authentication;
 }
 
 export interface IConfig {
