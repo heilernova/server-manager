@@ -15,10 +15,15 @@ export const login = async () => {
     ]);
     data.server = data.server.replace(/\/$/, '');
     startSpinner('Verifying credentials');
-    http.post(`${data.server}/sign-in`, { hostname: os.hostname(), username: data.username, password: data.password })
+
+    http.post<ILoginResponse>(`${data.server}/sign-in`, { hostname: os.hostname(), username: data.username, password: data.password })
     .then(response => {
+        config.addServer({
+            url: data.server,
+            username: response.data.username,
+            authorization: response.data.authorization
+        });
         stopSpinner('Session saved successfully', '✔');
-        config.addServer({ url: data.server, username: data.username, authentication: response.data });
     })
     .catch((err: Response) => {
         let message: string = '';
@@ -26,4 +31,16 @@ export const login = async () => {
         if (err.status == 400) message = 'Incorrect credentials'
         stopSpinner(message, '✘');
     })
+}
+
+export interface ILoginResponse  {
+        username: string,
+        name: string,
+        lastName: string,
+        role: "admin" | "collaborator",
+        authorization: {
+            type: "key",
+            name: string,
+            value: string
+        }
 }
