@@ -21,13 +21,6 @@ export class DeployController {
         let app: IApplication | undefined = await this._dbApps.get(id, user.id);
         if (!app) throw new HttpException('Aplicación no encontrada', 400);
         let res: any = await this._deploy.run(app, file.buffer);
-        if (res){
-            return {
-                name: res.name,
-                status: res.pm2_env.status
-            }
-        } else {
-            return {}
-        }
+        return res;
     }
 }
