@@ -1,13 +1,13 @@
 import { Authentication } from "../common/http.js";
 
-export interface ISession {
+export interface IServer {
     url: string,
     username: string,
     authentication: Authentication;
 }
 
 export interface IConfig {
-    sessions: ISession[];
+    servers: IServer[];
     cache: {
         login?: {
             server: string,

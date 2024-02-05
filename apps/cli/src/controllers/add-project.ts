@@ -1,12 +1,12 @@
 import inquirer from "inquirer";
 import { Response } from "../common/http.js";
 import { startSpinner, stopSpinner } from "../common/spinner.js";
-import { ISession } from "../config/config.interfaces.js";
+import { IServer } from "../config/config.interfaces.js";
 import { inject } from "../core.js"
 
 export const addProject = () => {
     let config = inject.config();
-    let session: ISession;
+    let session: IServer;
 
     if (config.sessions.length == 1){
         session = config.sessions[0];

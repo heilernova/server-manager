@@ -1,6 +1,6 @@
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { IConfig, IConfigLocal, IProject, ISession } from './config/config.interfaces.js';
+import { IConfig, IConfigLocal, IProject, IServer } from './config/config.interfaces.js';
 
 
 export class Config {
@@ -22,21 +22,21 @@ export class Config {
         return this._configLocal.projects;
     }
 
-    get sessions(): ISession[] {
-        return this._config.sessions;
+    get sessions(): IServer[] {
+        return this._config.servers;
     }
 
     get cache(){
         return this._config.cache;
     }
 
-    addSession(session: ISession): void {
+    addServer(session: IServer): void {
         session.url = session.url.replace(/\/$/, '');
-        let index: number = this._config.sessions.findIndex(x => x.url == session.url);
+        let index: number = this._config.servers.findIndex(x => x.url == session.url);
         if (index > -1){
-            this._config.sessions[index] = session;
+            this._config.servers[index] = session;
         } else {
-            this._config.sessions.push(session);
+            this._config.servers.push(session);
         }
         this.save();
     }

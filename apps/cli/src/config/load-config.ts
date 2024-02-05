@@ -5,7 +5,7 @@ import { IConfig, IConfigLocal } from "./config.interfaces.js";
 
 const defaultConfig = (): IConfig => {
     return {
-        sessions: [],
+        servers: [],
         cache: {}
     }
 }

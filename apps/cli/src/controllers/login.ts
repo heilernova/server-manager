@@ -18,7 +18,7 @@ export const login = async () => {
     http.post(`${data.server}/sign-in`, { hostname: os.hostname(), username: data.username, password: data.password })
     .then(response => {
         stopSpinner('Session saved successfully', '✔');
-        config.addSession({ url: data.server, username: data.username, authentication: response.data });
+        config.addServer({ url: data.server, username: data.username, authentication: response.data });
     })
     .catch((err: Response) => {
         let message: string = '';

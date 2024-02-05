@@ -1,7 +1,7 @@
 import { ReadStream, createReadStream, createWriteStream, existsSync } from "node:fs";
 import inquirer from "inquirer";
 import chalk from "chalk";
-import { IProject, ISession } from "../config/config.interfaces.js";
+import { IProject, IServer } from "../config/config.interfaces.js";
 import { inject } from "../core.js"
 import { startSpinner, stopSpinner } from "../common/spinner.js";
 import archiver from "archiver";
@@ -31,7 +31,7 @@ export const deploy = async () => {
     }
 
     // Verificamos si la sección esta activa para el proyecto
-    let session: ISession | undefined = config.sessions.find(x => x.url == project.deployIn);
+    let session: IServer | undefined = config.sessions.find(x => x.url == project.deployIn);
     if (!session){
         console.log(chalk.redBright(`There is no session for ${project.deployIn}`));
         process.exit();
