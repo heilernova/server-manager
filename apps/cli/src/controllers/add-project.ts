@@ -6,10 +6,10 @@ import { inject } from "../core.js"
 
 export const addProject = () => {
     let config = inject.config();
-    let session: IServer;
+    let server: IServer;
 
     if (config.servers.length == 1){
-        session = config.servers[0];
+        server = config.servers[0];
     } else if (config.servers.length > 0){
         process.exit();
     } else {
@@ -17,9 +17,9 @@ export const addProject = () => {
         process.exit();
     }
 
-    let http = inject.httpClient().authentication(session.authentication);
+    let http = inject.httpClient().server(server);
     startSpinner('Loading project');
-    http.get('http://localhost:3001/apps')
+    http.get('apps')
     .then(async response => {
         stopSpinner('Productos cargados', '✔');
         let info: { project: any, location: string, include: string } = await inquirer.prompt([
@@ -35,14 +35,14 @@ export const addProject = () => {
             url: info.project.url,
             framework: info.project.framework,
             location: info.location,
-            deployIn: session.url,
-            include: info.include.split(','),
+            deployIn: server.url,
+            include: info.include.trim().length > 0 ? info.include.split(',') : [],
         });
     })
     .catch((err: Response) => {
         let message: string = '';
         if (err.status == 401) message = '[401] Session invalid';
+        if (err.status == 500) message = '[500] Error in server';
         stopSpinner(message, '✘');
-        console.log('Err');
     })
 }
