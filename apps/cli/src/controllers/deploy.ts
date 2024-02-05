@@ -31,7 +31,7 @@ export const deploy = async () => {
     }
 
     // Verificamos si la sección esta activa para el proyecto
-    let session: IServer | undefined = config.sessions.find(x => x.url == project.deployIn);
+    let session: IServer | undefined = config.servers.find(x => x.url == project.deployIn);
     if (!session){
         console.log(chalk.redBright(`There is no session for ${project.deployIn}`));
         process.exit();

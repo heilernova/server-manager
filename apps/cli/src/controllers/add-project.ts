@@ -8,9 +8,9 @@ export const addProject = () => {
     let config = inject.config();
     let session: IServer;
 
-    if (config.sessions.length == 1){
-        session = config.sessions[0];
-    } else if (config.sessions.length > 0){
+    if (config.servers.length == 1){
+        session = config.servers[0];
+    } else if (config.servers.length > 0){
         process.exit();
     } else {
         console.log('Sign in to continue');

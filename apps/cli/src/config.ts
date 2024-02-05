@@ -22,7 +22,7 @@ export class Config {
         return this._configLocal.projects;
     }
 
-    get sessions(): IServer[] {
+    get servers(): IServer[] {
         return this._config.servers;
     }
 
