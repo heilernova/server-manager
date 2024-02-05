@@ -14,10 +14,10 @@ import { DbApplicationsService, IAppRow, IApplication, uuid } from '@api/common/
 export class DeployService {
     constructor(private readonly _pm2: Pm2Service, private readonly _dbApps: DbApplicationsService){}
 
-    async run(app: IApplication, zip: Buffer){
+    async run(app: IApplication, zip: Buffer): Promise<null | { status: any }>{
         switch(app.framework){
             case 'Angular': return this.runForAngular(app, zip);
-            case 'NestJS': return null;
+            case 'NestJS': return this.runForNestJS(app, zip);
             case 'FastAPI': return null;
             case null: return null;
             default: return null;
@@ -48,7 +48,53 @@ export class DeployService {
             // Utilizaremos PM2 para levantar el servidor
             this._pm2.start(location, app.startupFile, app.id, app.env);
         }
-        return true;
+        return {
+            status: "online"
+        };
+    }
+
+    private async runForNestJS(app: IApplication, buffer: Buffer){
+        let locationApp: string = join(app.location, 'app');
+        let currentPackage: { [p: string]: any } | undefined;
+        let executeNPMInstall: boolean = false;
+        if (!existsSync(locationApp)){
+            mkdirSync(locationApp);
+        }
+        if (existsSync(join(locationApp, 'package.json'))){
+            currentPackage = JSON.parse(readFileSync(join(locationApp, 'package.json')).toString());
+        }
+        this.clearDir(locationApp, app.ignore);
+        this.extractFiles(app.id, locationApp, buffer);
+        if (!existsSync(join(locationApp, 'node_modules'))){
+            execSync('npm i --omit=dev', { cwd: locationApp });
+        }
+        
+        
+        if (app.runningOn == 'PM2' && app.startupFile){
+            let nameProcess: uuid = app.id;
+            let process = this._pm2.getAll().find(x => x.name == nameProcess);
+            if (process){
+                this._pm2.reload(nameProcess, app.env);
+            } else {
+                this._pm2.start(locationApp, app.startupFile, nameProcess, app.env);
+            }
+            process = this._pm2.getAll().find(x => x.name == nameProcess);
+            if (process){
+                this._dbApps.update(app.id, { version: process?.pm2_env.version });
+                app.version = process.pm2_env.version;
+            }
+            // Guardamos
+            if (!existsSync(join(app.location, 'backups'))){
+                mkdirSync(join(app.location, 'backups'));
+            }
+            writeFileSync(join(app.location, 'backups', `V${process?.pm2_env.version}.zip`), buffer);
+            return {
+                status: process?.pm2_env.status
+            };
+        }
+        return {
+            status: "online"
+        };
     }
 
     private async runForNode(app: IAppRow, zip: Buffer){
