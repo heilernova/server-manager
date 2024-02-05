@@ -15,9 +15,10 @@ export class AuthController {
         let token = await this._dbTokens.generate(auth.id, credentials.hostname);
         let user = await this._dbUsers.get(auth.id);
         return {
-            role: user?.role,
+            username: user?.username,
             name: user?.name,
             lastName: user?.lastName,
+            role: user?.role,
             authorization: {
                 type: 'key',
                 name: 'app-token',
