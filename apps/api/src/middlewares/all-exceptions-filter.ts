@@ -34,12 +34,12 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
       }
       // Registro de errores del sistema;
       let date = new Date();
-      let dateString: string = `${date.getUTCFullYear()}-${(date.getUTCMonth() + 1).toString().padStart(2, '0')}-${date.getUTCDate()} ${date.getUTCHours().toString().padStart(2, ' ')}:${date.getUTCMinutes().toString().padEnd(2, '0')}:${date.getSeconds()}:${date.getMilliseconds().toString().padEnd(3, '0')}`;
+      let dateString: string = `${date.getUTCFullYear()}-${(date.getUTCMonth() + 1).toString().padStart(2, '0')}-${date.getUTCDate().toString().padStart(2, '0')} ${date.getUTCHours().toString().padStart(2, ' ')}:${date.getUTCMinutes().toString().padStart(2, '0')}:${date.getSeconds()}:${date.getMilliseconds().toString().padEnd(3, '0')}`;
       let method: string = host.switchToHttp().getRequest().method;
       let url: string = host.switchToHttp().getRequest().url;
       let ip: string = host.switchToHttp().getRequest().ip;
       let log: string = `[${dateString}] ${ip} ${method} ${url} ${Buffer.from(JSON.stringify((exception as any).response)).toString('base64')}\n`;
-      writeFileSync('./api.errors.log', log, { flag: 'a' })
+      writeFileSync('./app.errors.log', log, { flag: 'a' })
     }
     super.catch(exception, host);
   }
