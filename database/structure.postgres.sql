@@ -145,9 +145,9 @@ end;$$;
 
 create view vi_applications as
 select
-	b.user_id,
-	json_build_object('edit', b.edit, 'deploy', b.deploy) as permits,
-	a.*
+    b.user_id,
+    json_build_object('edit', b.edit, 'deploy', b.deploy) as permits,
+    a.*
 from applications a 
 inner join applications_access b on b.app_id = a.id;
 
