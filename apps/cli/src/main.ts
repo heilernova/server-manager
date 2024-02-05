@@ -14,6 +14,5 @@ program.action(() => deploy());
 program.version(inject.config().version, '-v, --version', 'Output the current version.');
 program.command('servers').action(() => serverListController());
 program.command('login').action(() => login());
-program.command('sessions').action(() => console.table(inject.config().servers.map(x => { return { url: x.url, username: x.username, authentication: x.authentication.type }})) );
 program.command('add').action(() => addProject());
 program.parse(process.argv);
