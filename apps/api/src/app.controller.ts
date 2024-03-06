@@ -9,13 +9,13 @@ export class AppController {
   @Get()
   getHello() {
     return {
-      name: 'Server manager For Novaccode',
+      name: 'Server manager by Novah.dev',
       version: this._config.version,
       env: this._config.nodeEnv,
-      panel: 'https://smpanel.novaccode.com',
+      panel: 'https://smpanel.novah.dev',
       urls: [
-        'https://www.novaccode.com',
-        'https://smpanel.novaccode.com'
+        'https://www.novah.dev',
+        'https://smpanel.novah.dev'
       ]
     }
   }
